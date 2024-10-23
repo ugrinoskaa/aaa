@@ -26,6 +26,9 @@
     <mat-nav-list>
       <hr/>
       <div class="nav-actions">
+        <button mat-icon-button class="toggle-btn" (click)="toggleSidebar()">
+          <mat-icon>{{ isSidebarOpen ? 'keyboard_double_arrow_left' : 'keyboard_double_arrow_right' }}</mat-icon>
+        </button>
       </div>
     </mat-nav-list>
   </mat-sidenav>
