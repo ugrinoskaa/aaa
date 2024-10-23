@@ -1,10 +1,14 @@
 import {ApplicationConfig, provideZoneChangeDetection} from '@angular/core';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
+import {provideRouter, withComponentInputBinding} from '@angular/router';
+import {routes} from './app.routes';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({eventCoalescing: true}),
-    provideHttpClient(withInterceptorsFromDi()), provideAnimationsAsync(),
+    provideRouter(routes, withComponentInputBinding()),
+    provideAnimationsAsync(),
+    provideHttpClient(withInterceptorsFromDi())
   ]
 };
