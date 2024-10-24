@@ -56,3 +56,27 @@
   flex: 1;
   justify-content: space-between;
 }
+
+.source-image {
+  background-image: url("/assets/sources.svg");
+  background-size: contain;
+  background-repeat: round;
+}
+
+.dataset-image {
+  background-image: url("/assets/datasets.svg");
+  background-size: contain;
+  background-repeat: round;
+}
+
+.chart-image {
+  background-image: url("/assets/charts.svg");
+  background-size: contain;
+  background-repeat: round;
+}
+
+.dashboard-image {
+  background-image: url("/assets/dashboards.svg");
+  background-size: contain;
+  background-repeat: round;
+}
