@@ -4,6 +4,7 @@ type SourceType string
 
 const (
 	POSTGRES SourceType = "postgres"
+	CSV      SourceType = "csv"
 )
 
 type Source struct {

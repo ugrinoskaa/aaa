@@ -131,6 +131,45 @@ func (h *Handler) SourcePostgresConnect(c *fiber.Ctx, uri string) error {
 	return c.JSON(result)
 }
 
+func (h *Handler) SourceCSVUpload(c *fiber.Ctx) error {
+	form, err := c.MultipartForm()
+	if err != nil {
+		return c.Status(http.StatusBadRequest).JSON(Error{
+			Status:  http.StatusBadRequest,
+			Message: "invalid multipart form",
+		})
+	}
+
+	files := form.File["files"]
+	if len(files) == 0 {
+		return c.Status(http.StatusBadRequest).JSON(Error{
+			Status:  http.StatusBadRequest,
+			Message: "no files uploaded",
+		})
+	}
+
+	datasets, err := h.Sources.Upload(c.Context(), files)
+	if err != nil {
+		return c.Status(http.StatusInternalServerError).JSON(Error{
+			Status:  http.StatusInternalServerError,
+			Message: err.Error(),
+		})
+	}
+
+	items := make([]DatasetRsp, len(datasets))
+	result := SourceRsp{Type: string(model.CSV), Datasets: items}
+
+	for idx, ds := range datasets {
+		result.Datasets[idx] = DatasetRsp{
+			Table:   ds.Config.Table,
+			Schema:  ds.Config.Schema,
+			Columns: ds.Config.Columns,
+		}
+	}
+
+	return c.JSON(result)
+}
+
 type SourceCreateReq struct {
 	Name     string `json:"name"`
 	Type     string `json:"type"`

@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"encoding/csv"
 	"errors"
 	"fmt"
 	"io"
@@ -257,4 +258,185 @@ func (s *SourceService) DiscoverDB(ctx context.Context, uri string) ([]model.Dat
 	}
 
 	return datasets, nil
+}
+
+func (s *SourceService) DiscoverCSV(ctx context.Context, uploadID string) ([]model.Dataset, error) {
+	datasets := make([]model.Dataset, 0)
+	uploadDir := filepath.Join(os.TempDir(), tmpUploadDir, uploadID)
+	entries, err := os.ReadDir(uploadDir)
+	if err != nil {
+		return datasets, err
+	}
+
+	for _, entry := range entries {
+		if ctx.Err() != nil {
+			return datasets, ctx.Err()
+		}
+
+		if entry.IsDir() {
+			continue
+		}
+
+		err = func() error {
+			file, err := os.Open(filepath.Join(uploadDir, entry.Name()))
+			if err != nil {
+				return err
+			}
+			defer file.Close()
+
+			columns, err := resolve(file)
+			if err != nil {
+				return err
+			}
+
+			datasets = append(datasets, model.Dataset{
+				Config: model.DatasetConfig{
+					Table:   entry.Name(),
+					Schema:  uploadID,
+					Columns: columns,
+				},
+			})
+
+			return err
+		}()
+		if err != nil {
+			return datasets, err
+		}
+	}
+
+	return datasets, err
+}
+
+func (s *SourceService) Upload(ctx context.Context, files []*multipart.FileHeader) ([]model.Dataset, error) {
+	uploadID := uuid.NewString()
+	uploadDir := filepath.Join(os.TempDir(), tmpUploadDir, uploadID)
+	datasets := make([]model.Dataset, 0, len(files))
+
+	if err := os.MkdirAll(uploadDir, 0755); err != nil {
+		return nil, fmt.Errorf("unable to create upload directory: %v", err)
+	}
+
+	for _, file := range files {
+		if ctx.Err() != nil {
+			return datasets, ctx.Err()
+		}
+
+		filename := filepath.Clean(file.Filename)
+		filename = strings.TrimSpace(strings.ToLower(filename))
+		filename = regexp.MustCompile(`[^a-z0-9_]+`).ReplaceAllString(filename, "_")
+
+		err := func() error {
+			incoming, err := file.Open()
+			if err != nil {
+				return err
+			}
+			defer incoming.Close()
+
+			// save to: /tmp/uploads/{uploadID}/{filename}
+			destPath := filepath.Join(uploadDir, filename)
+			dest, err := os.Create(destPath)
+			if err != nil {
+				return err
+			}
+			defer dest.Close()
+
+			if _, err := io.Copy(dest, incoming); err != nil {
+				return err
+			}
+
+			readFile, err := os.Open(destPath)
+			if err != nil {
+				return err
+			}
+			defer readFile.Close()
+
+			columns, err := resolve(readFile)
+			if err != nil {
+				return err
+			}
+
+			datasets = append(datasets, model.Dataset{
+				Config: model.DatasetConfig{
+					Table:   filename,
+					Schema:  uploadID,
+					Columns: columns,
+				},
+			})
+
+			return err
+		}()
+		if err != nil {
+			return datasets, err
+		}
+	}
+
+	go func(dir string) {
+		time.Sleep(10 * time.Minute)
+		_ = os.RemoveAll(dir)
+	}(uploadDir)
+
+	return datasets, nil
+}
+
+func resolve(file io.Reader) ([]string, error) {
+	reader := csv.NewReader(file)
+	headers, err := reader.Read()
+	if err != nil {
+		return nil, err
+	}
+
+	var records [][]string
+	for i := 0; i < 100; i++ {
+		row, err := reader.Read()
+		if err == io.EOF {
+			break
+		}
+
+		if err != nil {
+			return nil, err
+		}
+
+		records = append(records, row)
+	}
+
+	colValues := make([][]string, len(headers))
+	for _, row := range records {
+		for i := range headers {
+			if i < len(row) {
+				colValues[i] = append(colValues[i], row[i])
+			}
+		}
+	}
+
+	columns := make([]string, len(headers))
+	for i, name := range headers {
+		columns[i] = utils.FormatColumn(name, detectType(colValues[i]))
+	}
+
+	return columns, nil
+}
+
+func detectType(values []string) string {
+	isNumber, isDate := true, true
+
+	for _, val := range values {
+		val = strings.TrimSpace(val)
+		if val == "" {
+			continue
+		}
+		if _, err := strconv.ParseFloat(val, 64); err != nil {
+			isNumber = false
+		}
+		if _, err := time.Parse("2006-01-02", val); err != nil {
+			isDate = false
+		}
+	}
+	switch {
+	case isNumber:
+		return "numeric"
+	case isDate:
+		return "date"
+	default:
+		return "text"
+	}
 }
