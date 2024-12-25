@@ -1,0 +1,40 @@
+:host {
+  height: 100%;
+  width: 100%;
+
+  .toolbar {
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+
+    .toolbar-header {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .toolbar-title {
+      font-size: 24px;
+      font-weight: bold;
+      background: linear-gradient(45deg, #5a7be1, #cf4bb1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .toolbar-subtitle {
+      font-size: 16px;
+      color: #666;
+      margin-top: 8px;
+    }
+
+    .toolbar-content {
+      display: flex;
+      align-items: center;
+      align-self: end;
+      gap: 8px;
+    }
+  }
+}

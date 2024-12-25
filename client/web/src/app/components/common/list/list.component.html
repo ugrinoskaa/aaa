@@ -1,0 +1,41 @@
+<div *ngIf="data.length === 0; else list" class="empty-state">
+  <img [src]="props.emptyImageUrl" class="empty-state-image">
+  <h2>{{ props.emptyTitle }}</h2>
+  <p>{{ props.emptyDescription }}</p>
+  <button mat-raised-button color="primary" class="card-action" [routerLink]="props.addNewLink">
+    <mat-icon>add_to_photos</mat-icon>
+    {{ props.addNewButton }}
+  </button>
+</div>
+
+<ng-template #list>
+  <div class="flex-container">
+    <div class="toolbar">
+      <h4>{{ props.title }}</h4>
+      <p>{{ props.description }}</p>
+    </div>
+
+    <div class="main-content">
+      <div class="add-new">
+        <mat-card class="add-new-item">
+          <mat-card-content>
+            <p>{{ props.addNewTitle }}</p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-stroked-button color="primary" [routerLink]="props.addNewLink">
+              <mat-icon>add_to_photos</mat-icon>
+              {{ props.addNewButton }}
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+      <app-card *ngFor="let item of data"
+                [id]="item.id"
+                [name]="item.name"
+                [imageUrl]="item.type ? props.imageUrl + item.type + '.svg' : props.imageUrl"
+                (onCardDelete)="onCardDelete($event)"
+                (onCardClick)="onCardClick($event)">
+      </app-card>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,106 @@
+<div class="flex-container">
+  <div class="toolbar">
+    <h4>Sources management</h4>
+    <p>Set up the required parameters to create a new source and link your data from external systems or files.</p>
+  </div>
+
+  <mat-horizontal-stepper class="main-content" [linear]="true" #stepper>
+    <mat-step [stepControl]="firstStep" label="Source">
+      <form [formGroup]="firstStep">
+        <div class="card-container">
+          <mat-card class="source-card" (click)="onSourceSelect(SourceType.POSTGRES)"
+                    [class.selected]="firstStep.get('sourceType')?.value === SourceType.POSTGRES">
+            <mat-card-header>
+              <mat-card-title>PostgreSQL</mat-card-title>
+              <mat-icon class="icon-right">storage</mat-icon>
+            </mat-card-header>
+            <mat-card-content>
+              <p>Connect to a PostgreSQL database to manage relational data with ease.</p>
+            </mat-card-content>
+          </mat-card>
+
+          <mat-card class="source-card" (click)="onSourceSelect(SourceType.CSV)"
+                    [class.selected]="firstStep.get('sourceType')?.value === SourceType.CSV">
+            <mat-card-header>
+              <mat-card-title>CSV</mat-card-title>
+              <mat-icon class="icon-right">insert_drive_file</mat-icon>
+            </mat-card-header>
+            <mat-card-content>
+              <p>Import data from a CSV file and analyze structured data.</p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <div class="actions">
+          <button mat-raised-button matStepperNext [disabled]="!firstStep.valid">
+            NEXT
+          </button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="secondStep" label="Configure">
+      <form [formGroup]="secondStep">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Name</mat-label>
+          <input matInput formControlName="name" placeholder="Enter a name for this source">
+          <mat-hint>Pick a name to help you identify this source</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field"
+                        *ngIf="firstStep.get('sourceType')?.value === SourceType.POSTGRES">
+          <mat-label>Connection String URI</mat-label>
+          <mat-icon matPrefix>storage</mat-icon>
+          <input matInput formControlName="uri"
+                 placeholder="postgres://user:password&#64;host:port/dbname[?key=value&...]">
+          <mat-hint>postgres://user:password&#64;host:port/dbname?sslmode=disable</mat-hint>
+        </mat-form-field>
+
+        <div class="file-upload-row" *ngIf="firstStep.get('sourceType')?.value === SourceType.CSV">
+          <button mat-raised-button color="primary" type="button" (click)="fileInput.click()">
+            <mat-icon>upload</mat-icon>
+            Choose Files
+          </button>
+          <input type="file" accept="text/csv" #fileInput multiple hidden (change)="onFileSelected($event)">
+          <span *ngIf="files.length">{{ files.length }} file(s) selected</span>
+        </div>
+
+        <div class="actions">
+          <button mat-raised-button (click)="onConnect(stepper)" [disabled]="!secondStep.valid || isLoading">
+            <mat-progress-spinner *ngIf="isLoading" mode="indeterminate" diameter="20"></mat-progress-spinner>
+            <span *ngIf="isLoading">CONNECTING...</span>
+            <span *ngIf="!isLoading">CONNECT</span>
+          </button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step class="complete" label="Complete">
+      <p class="step-description">
+        <mat-icon>explore</mat-icon>
+        <strong>{{ discoveredLength }}</strong> discovered datasets
+      </p>
+
+      <div class="dataset-list">
+        <mat-card *ngFor="let source of discoveredSources" class="dataset-card">
+          <mat-card-header>
+            <mat-card-title>{{ source.table }}</mat-card-title>
+            <mat-card-subtitle>{{ source.schema }}</mat-card-subtitle>
+            <mat-icon class="icon-right">table_chart</mat-icon>
+          </mat-card-header>
+          <mat-card-content>
+            <p>Discovered datasets from the connected source.</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div class="actions">
+        <button mat-raised-button (click)="onSourceSave()" [disabled]="isLoading">
+          <mat-progress-spinner *ngIf="isLoading" mode="indeterminate" diameter="20"></mat-progress-spinner>
+          <span *ngIf="isLoading">SAVING...</span>
+          <span *ngIf="!isLoading">SAVE & ADD DATASETS</span>
+        </button>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+</div>

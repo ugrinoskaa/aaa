@@ -1,0 +1,86 @@
+:host {
+  width: 100%;
+  height: 100%;
+
+  .flex-container {
+    display: flex;
+    flex-direction: column;
+    margin: 16px 0;
+    height: calc(100% - 16px);
+  }
+
+  .toolbar {
+    flex: 0 0 auto;
+    background: linear-gradient(0deg, #5a7be1, #cf4bb1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    font-size: 18px;
+    font-weight: bold;
+
+    h4 {
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+  }
+}
+
+.main-content {
+  display: flex;
+  flex: 1 1 auto;
+  overflow: hidden;
+  padding: 0 0 16px;
+
+  .left-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-right: 1px dashed rgba(207, 75, 177, 0.75);
+    padding-right: 16px;
+
+    img {
+      width: 250px;
+    }
+
+    .details {
+      width: 100%;
+    }
+  }
+
+  .right-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 16px;
+    flex: 1;
+
+    .discovered-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+
+      .dataset-card {
+        display: flex;
+        min-width: 250px;
+        min-height: 100px;
+        justify-content: center;
+        border: 1px solid rgba(207, 75, 177, 0.75);
+        box-shadow: 0 4px 8px rgba(224, 229, 249, 0.7), 0 8px 16px rgba(245, 215, 238, 0.6);
+
+        .mat-mdc-card-header {
+          padding-top: 0;
+        }
+
+        ::ng-deep.mat-mdc-card-header-text {
+          margin-right: 16px;
+        }
+
+        .mat-icon {
+          margin-left: auto;
+          color: #5a7be1;
+        }
+      }
+    }
+  }
+}
+

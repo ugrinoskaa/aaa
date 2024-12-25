@@ -1,0 +1,10 @@
+<div class="spinner" *ngIf="isLoading">
+  <mat-spinner></mat-spinner>
+</div>
+
+<app-list *ngIf="!isLoading"
+          [data]="sources"
+          [props]="properties"
+          (onClick)="onSourceClick($event)"
+          (onDelete)="onSourceDelete($event)">
+</app-list>

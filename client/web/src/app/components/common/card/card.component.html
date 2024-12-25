@@ -1,0 +1,19 @@
+<div class="card-container" [class.flipped]="isFlipped">
+  <mat-card class="card" (click)="onClick()">
+    <div class="card-content">
+      <img mat-card-image [src]="imageUrl" alt="{{ name }}"/>
+      <h3 class="card-title">{{ name }}</h3>
+      <button mat-icon-button color="warn" class="delete-button" (click)="flipCard()">
+        <mat-icon>delete_sweep</mat-icon>
+      </button>
+    </div>
+  </mat-card>
+
+  <mat-card class="card confirmation-card">
+    <div class="confirmation-content">
+      <p>Are you sure?</p>
+      <button mat-flat-button color="primary" (click)="onDelete()">Delete</button>
+      <button mat-raised-button color="warn" (click)="flipCard()">No</button>
+    </div>
+  </mat-card>
+</div>

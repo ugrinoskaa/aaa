@@ -1,0 +1,170 @@
+:host {
+  width: 100%;
+  height: 100%;
+
+  .flex-container {
+    display: flex;
+    flex-direction: column;
+    margin: 16px 0;
+    height: calc(100% - 16px);
+  }
+
+  .toolbar {
+    flex: 0 0 auto;
+    background: linear-gradient(0deg, #5a7be1, #cf4bb1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    font-size: 18px;
+    font-weight: bold;
+
+    h4 {
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+  }
+}
+
+.main-content {
+  flex: 1 1 auto;
+  overflow: hidden;
+  padding: 0 0 16px;
+
+  form {
+    display: flex;
+    flex-direction: column;
+
+    .form-field {
+      max-width: 600px;
+      margin: 8px 0;
+    }
+  }
+
+  .card-container {
+    display: flex;
+    margin: 24px 0;
+    min-height: 150px;
+    gap: 12px;
+
+    .source-card {
+      width: 250px;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border-radius: 8px;
+      background-color: white;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      }
+
+      &.selected {
+        border: 2px solid #5a7be1;
+        box-shadow: 0 6px 12px rgba(90, 123, 225, 0.3);
+      }
+
+      mat-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      mat-card-title {
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+      }
+
+      mat-icon {
+        color: #5a7be1;
+      }
+
+      mat-card-content {
+        p {
+          font-size: 14px;
+          color: #666;
+          margin-top: 8px;
+        }
+      }
+    }
+  }
+
+  ::ng-deep.complete {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+
+    ::ng-deep.mdc-button__label {
+      display: flex;
+      gap: 4px;
+    }
+  }
+
+  .dataset-list {
+    gap: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+
+    .dataset-card {
+      width: 250px;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+
+      mat-card-header {
+        flex: 4;
+        display: flex;
+        align-items: flex-start;
+        padding-bottom: 8px;
+        justify-content: space-between;
+        word-break: break-word;
+      }
+
+      mat-icon {
+        color: #5a7be1;
+        margin-right: 8px;
+        flex: 0 0 auto;
+      }
+
+      mat-card-title {
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+      }
+
+      mat-card-content {
+        flex: 1;
+
+        p {
+          font-size: 14px;
+          color: #666;
+        }
+      }
+    }
+  }
+
+  .step-description {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
+
+  .file-upload-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+}

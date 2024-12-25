@@ -1,0 +1,30 @@
+<div class="flex-container" *ngIf="!!source">
+  <div class="toolbar">
+    <h4>Sources / {{source.name || ''}}</h4>
+  </div>
+
+  <div class="main-content">
+    <div class="left-panel">
+      <img [src]="'assets/' + source.type + '.svg'" [alt]="source.name"/>
+      <div class="details">
+        <h6>
+          <strong>Name: </strong>{{source.name}}
+        </h6>
+        <h6>
+          <strong>Datasets: </strong>{{source.datasets?.length}}
+        </h6>
+      </div>
+    </div>
+    <div class="right-panel">
+      <div class="discovered-list">
+        <mat-card *ngFor="let dataset of source.datasets" class="dataset-card">
+          <mat-card-header>
+            <mat-card-title>{{ dataset.table }}</mat-card-title>
+            <mat-card-subtitle>{{ dataset.schema }}</mat-card-subtitle>
+            <mat-icon>table_chart</mat-icon>
+          </mat-card-header>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>
