@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {Dataset} from './dataset.service';
 
 export enum SourceType {
   POSTGRES = 'postgres',
@@ -12,17 +13,6 @@ export interface Source {
   name?: string
   type?: SourceType
   datasets?: Dataset[]
-}
-
-export interface Dataset {
-  id?: number
-  name?: string
-  sourceId?: number
-  schema?: string
-  table?: string
-  columns?: string[]
-  dimensions?: string[];
-  metrics?: string[]
 }
 
 @Injectable({

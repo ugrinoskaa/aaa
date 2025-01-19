@@ -11,9 +11,10 @@ import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {AppToolbarComponent} from '../../toolbar/toolbar.component';
 import {APIService} from '../../../services/api.service';
-import {Dataset, SourceType} from '../../../services/source.service';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatListModule} from '@angular/material/list';
+import {Dataset} from '../../../services/dataset.service';
+import {SourceType} from '../../../services/source.service';
 
 @Component({
   selector: 'app-source-add',

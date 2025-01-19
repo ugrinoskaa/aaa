@@ -1,0 +1,10 @@
+<div class="spinner" *ngIf="isLoading">
+  <mat-spinner></mat-spinner>
+</div>
+
+<app-list *ngIf="!isLoading"
+          [data]="datasets"
+          [props]="properties"
+          (onClick)="onDatasetClick($event)"
+          (onDelete)="onDatasetDelete($event)">
+</app-list>

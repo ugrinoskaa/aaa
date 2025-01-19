@@ -1,0 +1,32 @@
+<div class="flex-container" *ngIf="!!dataset">
+  <div class="toolbar">
+    <h4>Datasets / {{dataset.name || ''}}</h4>
+  </div>
+
+  <div class="main-content">
+    <div class="left-panel">
+      <img src="assets/card_dataset.svg" [alt]="dataset.name"/>
+      <div class="details">
+        <h6><strong>Name: </strong>{{dataset.name}}</h6>
+        <h6><strong>Table: </strong>{{dataset.table}}</h6>
+        <h6><strong>Schema: </strong>{{dataset.schema}}</h6>
+      </div>
+    </div>
+    <div class="right-panel">
+      <table mat-table [dataSource]="columns" class="mat-elevation-z8 table">
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Name</th>
+          <td mat-cell *matCellDef="let element"> {{ element.name }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef>Type</th>
+          <td mat-cell *matCellDef="let element"> {{ element.type }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="['name', 'type']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['name', 'type'];"></tr>
+      </table>
+    </div>
+  </div>
+</div>

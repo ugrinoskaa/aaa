@@ -1,0 +1,76 @@
+:host {
+  width: 100%;
+  height: 100%;
+
+  .flex-container {
+    display: flex;
+    flex-direction: column;
+    margin: 16px 0;
+    height: calc(100% - 16px);
+  }
+
+  .toolbar {
+    flex: 0 0 auto;
+    background: linear-gradient(0deg, #5a7be1, #cf4bb1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    font-size: 18px;
+    font-weight: bold;
+
+    h4 {
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+  }
+}
+
+.main-content {
+  display: flex;
+  flex: 1 1 auto;
+  overflow: hidden;
+  padding: 0 0 16px;
+}
+
+.left-panel {
+  flex: 2;
+  padding: 8px;
+  gap: 8px;
+  overflow-y: auto;
+}
+
+.right-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  gap: 8px;
+  overflow-y: auto;
+
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  mat-form-field {
+    flex-grow: 1;
+  }
+
+  button {
+    bottom: 10px;
+    flex-shrink: 0;
+  }
+}
+
+.save-fab {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1000;
+}
