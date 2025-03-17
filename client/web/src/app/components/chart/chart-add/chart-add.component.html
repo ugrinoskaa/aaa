@@ -1,0 +1,119 @@
+<div class="flex-container">
+  <div class="toolbar">
+    <h4>Charts management</h4>
+    <p>Set up the required parameters to create a new chart and visualize your data.</p>
+  </div>
+
+  <div class="main-content">
+    <div class="left-panel">
+      <div echarts [options]="data.options" class="echart"></div>
+      <div class="charts">
+        <mat-card *ngFor="let ctype of chartTypes" class="chart-item" [class.selected]="chartType === ctype"
+                  (click)="onSelectChartType(ctype)">
+          <mat-card-header>
+            <mat-card-title>{{ ctype | uppercase }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <img src="assets/{{ctype}}.svg" alt="{{ ctype }}">
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+
+    <form class="right-panel" [formGroup]="chartForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline">
+        <mat-label>Name</mat-label>
+        <input matInput autocomplete="off" formControlName="name" placeholder="Enter a name for this chart"/>
+        <mat-error *ngIf="chartName?.hasError('required')">Name is required</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Dataset</mat-label>
+        <mat-select formControlName="dataset">
+          <mat-option *ngFor="let dataset of datasets" [value]="dataset.id">{{dataset.name}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="chartDataset?.hasError('required')">Dataset is required</mat-error>
+      </mat-form-field>
+      <mat-divider></mat-divider>
+      <mat-form-field appearance="outline" *ngIf="chartTypeSchema?.dimensions?.max !== 0">
+        <mat-label>Dimensions</mat-label>
+        <mat-select formControlName="dimensions" multiple [sortComparator]="noCompareFunction">
+          <mat-option
+            *ngFor="let dimension of dimensions"
+            [value]="dimension"
+            [disabled]="(chartDimensions?.value?.length || 0) >= (chartTypeSchema?.dimensions?.max || 1) && !chartDimensions?.value?.includes(dimension)">
+            {{dimension}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="chartDimensions?.hasError('required')">
+          At least one dimension is required
+        </mat-error>
+        <mat-error *ngIf="chartDimensions?.hasError('maxSelections')">
+          Maximum {{ chartTypeSchema?.dimensions?.max }} dimension(s) allowed for {{ chartType || 'this' }} chart
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" *ngIf="chartTypeSchema?.metrics?.max !== 0">
+        <mat-label>Metrics</mat-label>
+        <mat-select formControlName="metrics" multiple [sortComparator]="noCompareFunction">
+          <mat-option
+            *ngFor="let metric of metrics"
+            [value]="metric"
+            [disabled]="(chartMetrics?.value?.length || 0) >= (chartTypeSchema?.metrics?.max || 1) && !chartMetrics?.value?.includes(metric)">
+            {{metric}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="chartMetrics?.hasError('required')">
+          At least one metric is required
+        </mat-error>
+        <mat-error *ngIf="chartDimensions?.hasError('maxSelections')">
+          Maximum {{ chartTypeSchema?.metrics?.max }} metric(s) allowed for {{ chartType || 'this' }} chart
+        </mat-error>
+      </mat-form-field>
+      <mat-divider></mat-divider>
+      <div formArrayName="filters" *ngIf="chartTypeSchema?.filters?.max !== 0">
+        <div *ngFor="let filter of chartFilters.controls; let i = index" [formGroupName]="i" class="filters">
+          <mat-form-field appearance="outline">
+            <mat-label>Dimension</mat-label>
+            <mat-select formControlName="dimension">
+              <mat-option *ngFor="let d of dimensions" [value]="d">{{ d }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="operator">
+            <mat-label>Operator</mat-label>
+            <mat-select formControlName="operator">
+              <mat-option *ngFor="let filter of chartTypeSchema?.filters?.values" [value]="filter">{{filter}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Value</mat-label>
+            <input matInput formControlName="value" placeholder="Enter value"/>
+          </mat-form-field>
+
+          <div class="remove-filter">
+            <button mat-raised-button color="warn" type="button" (click)="removeFilter(i)">
+              <mat-icon>delete</mat-icon>
+              FILTER
+            </button>
+          </div>
+
+          <mat-divider></mat-divider>
+        </div>
+
+        <div class="add-filter">
+          <button mat-raised-button type="button"
+                  [disabled]="chartFilters.disabled || (chartFilters?.value?.length || 0) >= (chartTypeSchema?.filters?.max || 1)"
+                  color="primary" (click)="addFilter()">
+            <mat-icon>add_to_photos</mat-icon>
+            FILTER
+          </button>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button mat-fab class="save-fab" color="primary" type="submit" [disabled]="chartForm.invalid">
+          <mat-icon>save</mat-icon>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

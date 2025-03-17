@@ -6,8 +6,26 @@ import {AppSourceDetailComponent} from './components/source/source-detail/source
 import {AppDatasetDetailComponent} from './components/dataset/dataset-detail/dataset-detail.component';
 import {AppDatasetAddComponent} from './components/dataset/dataset-add/dataset-add.component';
 import {AppDatasetListComponent} from './components/dataset/dataset-list/dataset-list.component';
+import {AppChartListComponent} from './components/chart/chart-list/chart-list.component';
+import {AppChartAddComponent} from './components/chart/chart-add/chart-add.component';
+import {AppChartDetailComponent} from './components/chart/chart-detail/chart-detail.component';
 
 export const routes: Routes = [
+  {
+    path: 'charts',
+    title: 'A&A | Charts',
+    component: AppChartListComponent
+  },
+  {
+    path: 'charts/new',
+    title: 'A&A | Add Chart',
+    component: AppChartAddComponent
+  },
+  {
+    path: 'charts/:id',
+    title: 'A&A | Chart',
+    component: AppChartDetailComponent
+  },
   {
     path: 'datasets',
     title: 'A&A | Datasets',

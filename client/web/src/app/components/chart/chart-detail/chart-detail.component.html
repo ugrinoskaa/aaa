@@ -1,0 +1,43 @@
+<div class="flex-container" *ngIf="!!chart">
+  <div class="toolbar">
+    <h4>Charts / {{chart?.name}}</h4>
+  </div>
+
+  <div class="main-content">
+    <div class="left-panel">
+      <img [src]="'assets/' + chart.type + '.svg'" [alt]="chart.name"/>
+      <div class="details">
+        <h6>
+          <strong>Name: </strong>{{chart.name}}
+        </h6>
+        <div>
+          <h6>
+            <strong>Dimensions: </strong>{{chart.dimensions?.length}}
+          </h6>
+          <ul *ngFor="let dimension of chart.dimensions">
+            <li>{{dimension}}</li>
+          </ul>
+        </div>
+        <div>
+          <h6>
+            <strong>Metrics: </strong>{{chart.metrics?.length}}
+          </h6>
+          <ul *ngFor="let metric of chart.metrics">
+            <li>{{metric}}</li>
+          </ul>
+        </div>
+        <div *ngIf="chart.filters?.length">
+          <h6>
+            <strong>Filters: </strong>{{chart.filters?.length}}
+          </h6>
+          <ul *ngFor="let filter of chart.filters">
+            <li>{{ getFilter(filter, 0) }} <strong>{{ getFilter(filter, 1) }}</strong> {{ getFilter(filter, 2) }}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="right-panel">
+      <div echarts [options]="options" class="echart"></div>
+    </div>
+  </div>
+</div>
