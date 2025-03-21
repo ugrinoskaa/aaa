@@ -8,9 +8,10 @@ import (
 )
 
 type Handler struct {
-	Logger    *log.Logger
-	Sources   *service.SourceService
-	Datasets  *service.DatasetService
+	Logger   *log.Logger
+	Sources  *service.SourceService
+	Datasets *service.DatasetService
+	Charts   *service.ChartService
 }
 
 func (h *Handler) RegisterRoutes(router fiber.Router) {
@@ -24,6 +25,16 @@ func (h *Handler) RegisterRoutes(router fiber.Router) {
 	router.Get("/datasets/:id", h.DatasetGet)
 	router.Post("/datasets", h.DatasetCreate)
 	router.Delete("/datasets/:id", h.DatasetDelete)
+
+	router.Get("/chart-types", h.ChartTypesAll)
+	router.Get("/chart-types/:type", h.ChartGetType)
+
+	router.Get("/charts", h.ChartAll)
+	router.Get("/charts/:id", h.ChartGet)
+	router.Post("/charts", h.ChartCreate)
+	router.Post("/charts/validate", h.ChartValidate)
+	router.Post("/charts/:id/data", h.ChartRun)
+	router.Delete("/charts/:id", h.ChartDelete)
 }
 
 type Error struct {

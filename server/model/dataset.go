@@ -10,11 +10,6 @@ var (
 	SQLAggregationsColumn = []string{"COUNT(%s)", "AVG(%s)", "SUM(%s)", "MIN(%s)", "MAX(%s)"}
 )
 
-var (
-	SupportedPrecisions = []string{"year", "quarter", "month", "week", "day"}
-	SupportedFilters    = []string{"=", "!=", ">", "<", "LIKE", "IN"}
-)
-
 type Dataset struct {
 	ID       int
 	SourceID int
