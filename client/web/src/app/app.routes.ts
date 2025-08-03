@@ -9,8 +9,26 @@ import {AppDatasetListComponent} from './components/dataset/dataset-list/dataset
 import {AppChartListComponent} from './components/chart/chart-list/chart-list.component';
 import {AppChartAddComponent} from './components/chart/chart-add/chart-add.component';
 import {AppChartDetailComponent} from './components/chart/chart-detail/chart-detail.component';
+import {AppDashboardDetailComponent} from './components/dashboard/dashboard-detail/dashboard-detail.component';
+import {AppDashboardAddComponent} from './components/dashboard/dashboard-add/dashboard-add.component';
+import {AppDashboardListComponent} from './components/dashboard/dashboard-list/dashboard-list.component';
 
 export const routes: Routes = [
+  {
+    path: 'dashboards',
+    title: 'A&A | Dashboards',
+    component: AppDashboardListComponent
+  },
+  {
+    path: 'dashboards/new',
+    title: 'A&A | Add Dashboard',
+    component: AppDashboardAddComponent
+  },
+  {
+    path: 'dashboards/:id',
+    title: 'A&A | Dashboard',
+    component: AppDashboardDetailComponent
+  },
   {
     path: 'charts',
     title: 'A&A | Charts',

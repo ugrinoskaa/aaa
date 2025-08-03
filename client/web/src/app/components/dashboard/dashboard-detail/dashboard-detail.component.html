@@ -1,0 +1,15 @@
+<div class="flex-container" *ngIf="!!dashboard">
+  <div class="toolbar">
+    <h4>Dashboards / {{dashboard?.name || ''}}</h4>
+  </div>
+
+  <div class="main-content">
+    <div class="left-panel" id="dashboard">
+      <gridster [options]="config" class="gridster">
+        <gridster-item *ngFor="let item of dashboard.grid" [item]="item">
+          <app-echart-preview [chartId]="item['chartId']" [readonly]="true"></app-echart-preview>
+        </gridster-item>
+      </gridster>
+    </div>
+  </div>
+</div>

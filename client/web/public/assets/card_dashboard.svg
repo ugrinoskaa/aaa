@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 100" width="150" height="100">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="50%" style="stop-color:#5a7be1;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#cf4bb1;stop-opacity:1"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000000" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <!-- Main dashboard panel -->
+  <rect x="10" y="10" width="130" height="80" rx="8" fill="url(#grad)" opacity="0.75" filter="url(#shadow)"/>
+  <!-- Bar chart representation -->
+  <rect x="20" y="60" width="15" height="20" rx="2" fill="#FFFFFF" opacity="0.9" class="chart-element"/>
+  <rect x="40" y="50" width="15" height="30" rx="2" fill="#FFFFFF" opacity="0.9" class="chart-element"/>
+  <rect x="60" y="55" width="15" height="25" rx="2" fill="#FFFFFF" opacity="0.9" class="chart-element"/>
+  <!-- Line chart representation -->
+  <polyline points="80,60 95,50 110,55 125,45" fill="none" stroke="#FFFFFF" stroke-width="2" opacity="1"
+            stroke-linecap="round" stroke-linejoin="round" class="chart-element"/>
+  <circle cx="80" cy="60" r="3" fill="#cf4bb1" opacity="0.9" filter="url(#shadow)" class="chart-element"/>
+  <circle cx="95" cy="50" r="3" fill="#cf4bb1" opacity="0.9" filter="url(#shadow)" class="chart-element"/>
+  <circle cx="110" cy="55" r="3" fill="#cf4bb1" opacity="0.9" filter="url(#shadow)" class="chart-element"/>
+  <circle cx="125" cy="45" r="3" fill="#cf4bb1" opacity="0.9" filter="url(#shadow)" class="chart-element"/>
+  <!-- Secondary panel (e.g., legend or summary) -->
+  <rect x="110" y="15" width="25" height="20" rx="4" fill="#FFFFFF" opacity="0.9" filter="url(#shadow)"/>
+</svg>
