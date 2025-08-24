@@ -8,10 +8,11 @@ import (
 )
 
 type Handler struct {
-	Logger   *log.Logger
-	Sources  *service.SourceService
-	Datasets *service.DatasetService
-	Charts   *service.ChartService
+	Logger    *log.Logger
+	Sources   *service.SourceService
+	Datasets  *service.DatasetService
+	Charts    *service.ChartService
+	Dashboard *service.DashboardService
 }
 
 func (h *Handler) RegisterRoutes(router fiber.Router) {
@@ -35,6 +36,11 @@ func (h *Handler) RegisterRoutes(router fiber.Router) {
 	router.Post("/charts/validate", h.ChartValidate)
 	router.Post("/charts/:id/data", h.ChartRun)
 	router.Delete("/charts/:id", h.ChartDelete)
+
+	router.Get("/dashboards", h.DashboardAll)
+	router.Get("/dashboards/:id", h.DashboardGet)
+	router.Post("/dashboards", h.DashboardCreate)
+	router.Delete("/dashboards/:id", h.DashboardDelete)
 }
 
 type Error struct {
