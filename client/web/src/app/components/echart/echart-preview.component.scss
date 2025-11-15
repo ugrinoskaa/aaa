@@ -1,0 +1,41 @@
+:host {
+  mat-card.container {
+    height: 100%;
+    width: 100%;
+    border: 1px solid rgba(207, 75, 177, 0.45);
+    border-radius: 4px;
+
+    ::ng-deep.mat-mdc-card-header {
+      align-items: center;
+
+      button {
+        margin-left: auto;
+      }
+
+      mat-toolbar {
+        font-size: 24px;
+        font-weight: bold;
+        background: linear-gradient(45deg, #5a7be1, #cf4bb1);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    ::ng-deep.mat-mdc-card-content {
+      height: 100%;
+
+      .echart-container {
+        height: 100%;
+        width: 100%;
+
+        echarts {
+          display: block;
+        }
+      }
+    }
+  }
+}

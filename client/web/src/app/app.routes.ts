@@ -1,5 +1,5 @@
 import {Routes} from '@angular/router';
-import {HomeComponent} from "../../../../../../Desktop/AAA/client/web/src/app/components/home/home.component";
+import {HomeComponent} from "./components/home/home.component";
 import {AppSourceListComponent} from './components/source/source-list/source-list.component';
 import {AppSourceAddComponent} from './components/source/source-add/source-add.component';
 import {AppSourceDetailComponent} from './components/source/source-detail/source-detail.component';

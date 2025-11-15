@@ -101,7 +101,7 @@
 
         <div class="add-filter">
           <button mat-raised-button type="button"
-                  [disabled]="chartFilters.disabled || (chartFilters?.value?.length || 0) >= (chartTypeSchema?.filters?.max || 1)"
+                  [disabled]="chartFilters.disabled || (chartFilters.value?.length || 0) >= (chartTypeSchema?.filters?.max || 1)"
                   color="primary" (click)="addFilter()">
             <mat-icon>add_to_photos</mat-icon>
             FILTER
