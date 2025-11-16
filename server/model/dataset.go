@@ -17,6 +17,12 @@ type Dataset struct {
 	Config   DatasetConfig
 }
 
+type DatasetConfig struct {
+	Schema  string
+	Table   string
+	Columns []string
+}
+
 func (ds DatasetConfig) Dimensions() []string {
 	dimensions := make([]string, 0, len(ds.Columns))
 

@@ -2,9 +2,14 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
 	"os"
+
+	"github.com/amukoski/aaa/api"
+	"github.com/amukoski/aaa/service"
+	"github.com/amukoski/aaa/service/render"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/jackc/pgx/v4/pgxpool"
@@ -37,7 +42,35 @@ func main() {
 	}
 	defer db.Close()
 
-	if err = fiber.New().Listen(fmt.Sprintf(":%v", httpPort)); err != nil {
+	barChart, barErr := render.NewBarChart()
+	pieChart, pieErr := render.NewPieChart()
+	lineChart, lineErr := render.NewLineChart()
+	scatterChart, scatterErr := render.NewScatterChart()
+	heatmapChart, heatmapErr := render.NewHeatmapChart()
+	sankeyChart, sankeyErr := render.NewSankeyChart()
+
+	if err = errors.Join(barErr, pieErr, lineErr, scatterErr, heatmapErr, sankeyErr); err != nil {
+		logger.Fatal(err)
+	}
+
+	registry := []service.Chart{barChart, pieChart, lineChart, scatterChart, heatmapChart, sankeyChart}
+
+	sources := service.NewSourceService(db)
+	datasets := service.NewDatasetService(db, sources)
+	charts := service.NewChartService(db, sources, datasets, registry...)
+	dashboards := service.NewDashboardService(db)
+	handler := api.Handler{
+		Logger:    logger,
+		Sources:   sources,
+		Datasets:  datasets,
+		Charts:    charts,
+		Dashboard: dashboards,
+	}
+
+	app := fiber.New()
+	handler.RegisterRoutes(app.Group("/api"))
+
+	if err = app.Listen(fmt.Sprintf(":%v", httpPort)); err != nil {
 		logger.Fatal(err)
 	}
 }
